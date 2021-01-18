@@ -1,9 +1,7 @@
 package de.dhbw.ravensburg.wp.mymoviedatabase;
 
-import de.dhbw.ravensburg.wp.mymoviedatabase.model.Cast;
-import de.dhbw.ravensburg.wp.mymoviedatabase.model.Director;
-import de.dhbw.ravensburg.wp.mymoviedatabase.model.Movie;
-import de.dhbw.ravensburg.wp.mymoviedatabase.model.Soundtrack;
+import de.dhbw.ravensburg.wp.mymoviedatabase.model.*;
+import de.dhbw.ravensburg.wp.mymoviedatabase.repository.AwardRepository;
 import de.dhbw.ravensburg.wp.mymoviedatabase.repository.MovieRepository;
 import de.dhbw.ravensburg.wp.mymoviedatabase.service.MovieService;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.List;
 
 @Component
 @Slf4j
@@ -22,11 +21,15 @@ public class ManualTestBean {
 
     MovieRepository movieRepository;
     MovieService movieService;
+    AwardRepository awardRepository;
 
-    ManualTestBean(MovieRepository movieRepository, MovieService movieService)
+
+    ManualTestBean(MovieRepository movieRepository, MovieService movieService, AwardRepository awardRepository)
     {
         this.movieRepository = movieRepository;
         this.movieService = movieService;
+        this.awardRepository = awardRepository;
+
     }
 
     @EventListener(ApplicationReadyEvent.class)
@@ -149,6 +152,21 @@ public class ManualTestBean {
         sound_1.setMovie(movie_1);
         sound_2.setMovie(movie_2);
 
+        //b)
+        //Award anlegen
+        Award award_1 = new Award("Academy of Motion Picture Arts and Sciences","Best Visual Effects",2015);
+        Award award_2 = new Award("Academy of Motion Picture Arts and Sciences","Best Film Music",2015);
+        //Award zuordnen
+        movie_1.setAward(award_1);
+        movie_1.setAward(award_2);
+        //Speichern mit Hilfe des MovieRepository
+        this.movieRepository.save(movie_1);
+        //Speichern mit Hilfe des AwardRepository
+        this.awardRepository.save(movie_1);
+
+        log.info(("-----Wird Award gespeichert?-------"));
+        this.awardRepository.findByAwardAcademy("Academy of Motion Picture Arts and Sciences").
+                forEach(movie-> log.info(movie.getTitle()));
 
 
         //Filme speichern

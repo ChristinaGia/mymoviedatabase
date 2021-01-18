@@ -61,7 +61,10 @@ public class MovieServiceImpl implements MovieService{
         Movie tmp = this.movieRepository.findById(id).get();
         tmp.setTitle(newMovieName);
         if (!newMovieName.isEmpty()){
+        /* Musst nicht gespeichert werden, da eine @Transaction sowieso atomar gespeichert wird
             this.movieRepository.save(tmp);
+
+         */
         }
     }
 

@@ -34,6 +34,13 @@ public class Movie {
 
     private double imdbRating;
 
+    //a) 1:N Beziehung mit Award
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="award_id", nullable = true)
+    private Award award;
+
+
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="director_id", nullable = true)
     private Director director;
@@ -65,4 +72,5 @@ public class Movie {
         this.coverImgUrl = coverImgUrl;
         this.imdbRating = imdbRating;
     }
+
 }

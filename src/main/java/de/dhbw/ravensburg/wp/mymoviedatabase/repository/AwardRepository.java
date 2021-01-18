@@ -9,13 +9,13 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface MovieRepository extends JpaRepository<Movie, Long> {
-    List<Movie> findByTitleContaining(String substring);
-    List<Movie> findByImdbRatingGreaterThan(double rating);
+public interface AwardRepository extends JpaRepository<Movie, Long> {
 
+        @Query("SELECT m FROM Movie m WHERE m.title like %:param1%")
+        List<Movie> findAllMoviesBelongingToSeries(
+                @Param("param1") String series);
 
-    @Query("SELECT m FROM Movie m WHERE m.title like %:param1%")
-    List<Movie> findAllMoviesBelongingToSeries(
-            @Param("param1") String series);
+        //b)
+        List<Movie> findByAwardAcademy(String academy);
+
 }
-
